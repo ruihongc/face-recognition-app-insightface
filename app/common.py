@@ -36,10 +36,9 @@ def load_faces(app, db_path, res_x, res_y, num_dimensions):
     return names, database, index
 
 def build_index(embeddings, num_dimensions):
-    embeddings_np = np.array(embeddings)
-
     index = Index(Space.Euclidean, num_dimensions=num_dimensions)
-    index.add_items(embeddings_np)
+    if embeddings:
+        index.add_items(np.array(embeddings))
     return index
 
 def request_task(url, name, location):
