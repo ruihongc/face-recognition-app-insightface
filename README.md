@@ -31,7 +31,7 @@
 
 ### Pipe RTSP stream from IP camera via FFmpeg
 1. ```export VIDEO_NUMBER=1``` (replace the video number with the actual virtual camera number you want to use)
-2. ```export RTSP_ADDR=rtsp://admin:CV@hikvision@192.168.1.65``` (replace the RTSP address with the correct one)
+2. ```export RTSP_ADDR=rtsp://username: password@255.255.255.255``` (replace the username , password and IP address accordingly)
 3. ```sudo modprobe v4l2loopback devices=1 video_nr=$VIDEO_NUMBER exclusive_caps=1 card_label="Virtual Webcam"```
 4. ```ffmpeg -rtsp_transport tcp -stream_loop -1 -re -i $RTSP_ADDR -vcodec rawvideo -threads 0 -f v4l2 /dev/video$VIDEO_NUMBER```
 
