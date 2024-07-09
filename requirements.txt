@@ -1,0 +1,9 @@
+# onnxruntime-gpu
+opencv-contrib-python-headless
+imutils
+streamsync
+mjpeg_streamer
+pandas
+pyarrow
+insightface
+voyager
