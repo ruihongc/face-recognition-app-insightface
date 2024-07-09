@@ -278,7 +278,7 @@ app.prepare(ctx_id=0, det_thresh=DET_THRESHOLD, det_size=DET_SIZE)
 names, database, index = load_faces(app, DB_PATH, CAP_X, CAP_Y, NUM_DIMENSIONS)
 
 initial_state = ss.init_state({
-    "image": "http://0.0.0.0:8501/0",
+    "image": "http://0.0.0.0:8501/stream",
     "running": "no",
     "results": pd.DataFrame(columns=("Time", "Identity", "Image", "Ranking", "Distance",), data=[(str(datetime.min), "SAMPLE", "0.png", 1, 1.0)]),
     "filename": "",
