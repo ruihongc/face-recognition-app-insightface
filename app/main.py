@@ -30,7 +30,7 @@ placeholder_preview = open("./static/placeholder_preview.png", "rb").read()
 placeholder = cv2.imdecode(np.frombuffer(open("./static/placeholder.jpg", "rb").read(), np.uint8), cv2.IMREAD_COLOR)
 
 def process_image(img, faces, matches, threshold, log, send, url, location, live_result, interval):
-    img = draw_boxes(img, faces)
+    img = draw_boxes(img.astype(np.uint8).copy() , faces)
     dets = []
     for face in faces:
         neighbors, distances = index.query(face.normed_embedding, k=matches)
@@ -214,7 +214,7 @@ def refresh_images(state):
     if state["lib"]["selected_person"] is None:
         state["lib"]["select_image"] = {}
     else:
-        images = sorted(database[state["lib"]["selected_person"]].keys())
+        images = sorted(key for key in database[state["lib"]["selected_person"]].keys() if key != "latest")
         state["lib"]["select_image"] = dict(zip(images, images))
 
 def select_person(state):
@@ -222,27 +222,33 @@ def select_person(state):
 
 def select_image(state):
     if (state["lib"]["selected_person"] != None) and (state["lib"]["selected_image"] != None):
+        # try:
+        img = np.array(Image.open(os.path.join(DB_PATH, state["lib"]["selected_person"].replace("/", "."), state["lib"]["selected_image"])))[:, :, ::-1]
+        # print(img)
+        # print(os.path.join(DB_PATH, state["lib"]["selected_person"].replace("/", "."), state["lib"]["selected_image"]))
+        # img = imutils.resize(img, width=CAP_X)[:CAP_Y,:]
+        state["lib"]["viewer"] = cv2.imencode(".png", img)[1].tobytes()
+        faces = app.get(img)
         try:
-            img = np.array(Image.open(os.path.join(DB_PATH, state["lib"]["selected_person"].replace("/", "."), state["lib"]["selected_image"])))[:, :, ::-1]
-            # img = imutils.resize(img, width=CAP_X)[:CAP_Y,:]
-            state["lib"]["viewer"] = cv2.imencode(".png", img)[1].tobytes()
-            faces = app.get(img)
-            img = draw_boxes(img, faces)
-            for face in faces:
-                neighbors, distances = index.query(face.normed_embedding, k=1)
-                if distances[0] < float(state["params"]["threshold"]):
-                    name = names[neighbors[0]][0]
-                else:
-                    name = "Unknown"
-                cv2.rectangle(img, (int(face.bbox[0]), int(face.bbox[1]) - 30), (int(face.bbox[0]) + len(name)*10 + 20, int(face.bbox[1])), (255, 255, 255), cv2.FILLED)
-                cv2.putText(img,
-                        name,
-                        (int(face.bbox[0] + 10), int(face.bbox[1]) - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX,
-                        0.5, (0, 0, 0), 1)
-            state["lib"]["viewer"] = cv2.imencode(".png", img)[1].tobytes()
+            threshold = float(params["threshold"])
         except:
-            state["lib"]["viewer"] = placeholder_preview
+            threshold = DEFAULT_THRESHOLD
+        img, _ = process_image(img, faces, 1, threshold, False, False, "", "", False, -1)
+        # for face in faces:
+        #     neighbors, distances = index.query(face.normed_embedding, k=1)
+        #     if distances[0] < float(state["params"]["threshold"]):
+        #         name = names[neighbors[0]][0]
+        #     else:
+        #         name = "Unknown"
+        #     cv2.rectangle(img, (int(face.bbox[0]), int(face.bbox[1]) - 30), (int(face.bbox[0]) + len(name)*10 + 20, int(face.bbox[1])), (255, 255, 255), cv2.FILLED)
+        #     cv2.putText(img,
+        #             name,
+        #             (int(face.bbox[0] + 10), int(face.bbox[1]) - 10),
+        #             cv2.FONT_HERSHEY_SIMPLEX,
+        #             0.5, (0, 0, 0), 1)
+        state["lib"]["viewer"] = cv2.imencode(".png", img)[1].tobytes()
+        # except:
+        #     state["lib"]["viewer"] = placeholder_preview
     else:
         state["lib"]["viewer"] = placeholder_preview
 
