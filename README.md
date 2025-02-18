@@ -34,7 +34,7 @@
 ### Edit
 1. Enter venv: ```source ./venv/bin/activate```
 2. Start app: ```python main.py edit```
-3. Open ```127.0.0.1:3006``` in the browser (Chromium recommended)
+3. Open ```127.0.0.1:3005``` in the browser (Chromium recommended)
 
 ## FAQ
 
