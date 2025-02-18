@@ -76,7 +76,7 @@ def draw_boxes(img, faces):
         for count in range(len(faces)):
             face = faces[count]
             if count != largest:
-                cv2.rectangle(img, (int(face.bbox[0]), int(face.bbox[1])), (int(face.bbox[2]), int(face.bbox[3])), (255, 0, ), 2)
+                cv2.rectangle(img, (int(face.bbox[0]), int(face.bbox[1])), (int(face.bbox[2]), int(face.bbox[3])), (255, 0, 0), 2)
             else:
                 cv2.rectangle(img, (int(face.bbox[0]), int(face.bbox[1])), (int(face.bbox[2]), int(face.bbox[3])), (0, 255, 0), 2)
     return img
