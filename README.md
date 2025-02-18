@@ -25,11 +25,16 @@
 
 ### Run
 1. Enter venv: ```source ./venv/bin/activate```
-2. Start app: ```streamsync run app```
+2. Start app: ```python main.py```
 3. Open ```127.0.0.1:3005``` in the browser (Chromium recommended)
 4. Change the input source in the settings accordingly 
 5. Adjust other settings to suit your use case
 6. Play
+
+### Edit
+1. Enter venv: ```source ./venv/bin/activate```
+2. Start app: ```python main.py edit```
+3. Open ```127.0.0.1:3006``` in the browser (Chromium recommended)
 
 ## FAQ
 
