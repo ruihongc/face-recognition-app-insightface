@@ -1,6 +1,7 @@
 import uvicorn
 import streamsync.serve
 from contextlib import asynccontextmanager
+from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 import os
 import sys
