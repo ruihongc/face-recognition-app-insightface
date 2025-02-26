@@ -2,7 +2,7 @@ from PIL import Image
 from voyager import Index, Space
 import numpy as np
 import cv2
-import imutils
+# import imutils
 import threading
 import requests
 import os
